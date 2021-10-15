@@ -1,0 +1,33 @@
+- hosts: all
+
+  become: yes
+  tasks:
+    # - name: "Criando um arquivo a toa no servidor"
+    #   shell: "echo 'escrevendo algo no servidor' >> teste.txt"
+
+    # - name: "Instalando pacotes"
+    #   apt:
+    #     name: "{{ item }}"
+    #     state: "latest"
+    #   become: yes # roda com sudo
+    #   with_items:
+    #     - nodejs
+    #     - 
+
+    - name: "Installing Java"
+      apt:
+        name: "openjdk-11-jdk"
+        state: "latest"
+
+    - name: "Getting Jenkins Repo Key"
+      apt_key: 
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io.key 
+        state: "present"
+      
+    - name: "Getting Jenkins Repo"
+      shell: "sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'"
+
+    - name: "Installing Jenkins"
+      apt: 
+        name: jenkins 
+        update_cache: yes
